@@ -143,9 +143,13 @@ class MainActivity : AppCompatActivity(), UsersListener {
                     user.firstName + " " + user.lastName + " is not available for meeting",
                     Toast.LENGTH_LONG).show()
             }else{
-                Toast.makeText(this,
-                    "Video meeting with " + user.firstName + " " + user.lastName,
-                    Toast.LENGTH_LONG).show()
+//                Toast.makeText(this,
+//                    "Video meeting with " + user.firstName + " " + user.lastName,
+//                    Toast.LENGTH_LONG).show()
+                launchActivity<OutgoingInvitationActivity> {
+                    putExtra("user", user)
+                    putExtra("type", "video")
+                }
             }
         }
 
