@@ -168,9 +168,11 @@ class MainActivity : AppCompatActivity(), UsersListener {
                 user.firstName + " " + user.lastName + " is not available for meeting",
                 Toast.LENGTH_LONG).show()
         }else{
-            Toast.makeText(this,
-                "Audio meeting with " + user.firstName + " " + user.lastName,
-                Toast.LENGTH_LONG).show()
+            launchActivity<OutgoingInvitationActivity> {
+                putExtra("user", user)
+                putExtra("type", "audio")
+                putExtra(REMOTE_MSG_INVITOR_TOKEN, retrieveString(KEY_FCM_TOKEN))
+            }
         }
     }
 }

@@ -47,7 +47,8 @@ import java.util.*
 
 class OutgoingInvitationActivity : AppCompatActivity() {
     private var invitorToken: String? = null
-    var meetingRoom:String? = null
+    private var meetingRoom:String? = null
+    private var meetingType:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,11 +57,12 @@ class OutgoingInvitationActivity : AppCompatActivity() {
         )
 
         invitorToken = intent.getStringExtra(REMOTE_MSG_INVITOR_TOKEN)
+        meetingType = intent.getStringExtra("type")
 
-        val meetingType = intent.getStringExtra("type")
         meetingType?.let {
             when (meetingType) {
                 "video" -> ivMeetingType.setImageResource(R.drawable.ic_video)
+                "audio" -> ivMeetingType.setImageResource(R.drawable.ic_audio)
             }
         }
 
@@ -89,7 +91,7 @@ class OutgoingInvitationActivity : AppCompatActivity() {
                 ).show()
                 return
             }
-            initiateMeeting(meetingType, user.token!!)
+            initiateMeeting(meetingType!!, user.token!!)
         }
     }
 
@@ -195,34 +197,23 @@ class OutgoingInvitationActivity : AppCompatActivity() {
                 if(type!=null){
                     when(type){
                         REMOTE_MSG_INVITATION_ACCEPTED -> {
-
-                            val serverURL: URL
-                            serverURL = try {
-                                // When using JaaS, replace "https://meet.jit.si" with the proper serverURL
+                            val serverURL: URL = try {
                                 URL("https://meet.jit.si")
                             } catch (e: MalformedURLException) {
                                 e.printStackTrace()
                                 throw RuntimeException("Invalid server URL!")
                             }
-                            val defaultOptions = JitsiMeetConferenceOptions.Builder()
-                                .setServerURL(serverURL)
-                                // When using JaaS, set the obtained JWT here
-                                //.setToken("MyJWT")
-                                // Different features flags can be set
-                                //.setFeatureFlag("toolbox.enabled", false)
-                                //.setFeatureFlag("filmstrip.enabled", false)
+                            val defaultOptionsBuilder= JitsiMeetConferenceOptions.Builder()
+                            defaultOptionsBuilder.setServerURL(serverURL)
                                 .setWelcomePageEnabled(false)
-                                .build()
-                            JitsiMeet.setDefaultConferenceOptions(defaultOptions)
+                            if(meetingType.equals("audio")){
+                                defaultOptionsBuilder.setVideoMuted(true)
+                            }
+                            JitsiMeet.setDefaultConferenceOptions(defaultOptionsBuilder.build())
 
                             val options = JitsiMeetConferenceOptions.Builder()
                                 .setRoom("text")
-                                // Settings for audio and video
-                                //.setAudioMuted(true)
-                                //.setVideoMuted(true)
                                 .build()
-                            // Launch the new activity with the given options. The launch() method takes care
-                            // of creating the required Intent and passing the options.
                             JitsiMeetActivity.launch(this@OutgoingInvitationActivity, options)
                             finish()
                         }

@@ -39,14 +39,18 @@ import java.net.MalformedURLException
 import java.net.URL
 
 class IncomingInvitationActivity : AppCompatActivity() {
+    private var meetingType:String? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_incoming_invitation)
 
-        val meetingType = intent.getStringExtra("type")
+        meetingType = intent.getStringExtra(Constants.REMOTE_MSG_MEETING_TYPE)
         meetingType?.let {
             when (meetingType) {
                 "video" -> ivMeetingType.setImageResource(R.drawable.ic_video)
+                "audio" -> ivMeetingType.setImageResource(R.drawable.ic_audio)
             }
         }
 
@@ -117,24 +121,21 @@ class IncomingInvitationActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         if (type == REMOTE_MSG_INVITATION_ACCEPTED) {
                             try {
-                                val serverURL: URL
-                                serverURL = try {
-                                    // When using JaaS, replace "https://meet.jit.si" with the proper serverURL
+                                val serverURL: URL = try {
                                     URL("https://meet.jit.si")
                                 } catch (e: MalformedURLException) {
                                     e.printStackTrace()
                                     throw RuntimeException("Invalid server URL!")
                                 }
-                                val defaultOptions = JitsiMeetConferenceOptions.Builder()
+                                val defaultOptionsBuilder = JitsiMeetConferenceOptions.Builder()
+                                defaultOptionsBuilder
                                     .setServerURL(serverURL)
-                                    // When using JaaS, set the obtained JWT here
-                                    //.setToken("MyJWT")
-                                    // Different features flags can be set
-                                    //.setFeatureFlag("toolbox.enabled", false)
-                                    //.setFeatureFlag("filmstrip.enabled", false)
                                     .setWelcomePageEnabled(false)
-                                    .build()
-                                JitsiMeet.setDefaultConferenceOptions(defaultOptions)
+
+                                if(meetingType.equals("audio"))
+                                defaultOptionsBuilder.setVideoMuted(true)
+
+                                JitsiMeet.setDefaultConferenceOptions(defaultOptionsBuilder.build())
 
                                 val options = JitsiMeetConferenceOptions.Builder()
                                     .setRoom("text")
