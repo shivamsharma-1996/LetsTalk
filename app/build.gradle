@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.shivam.letstalk"
-        minSdkVersion 22
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -64,6 +64,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
     //implementation 'com.google.firebase:firebase-firestore:23.0.1'
     implementation 'com.google.firebase:firebase-firestore-ktx:23.0.1'
+
+    //Jitsi Meet
+    implementation ('org.jitsi.react:jitsi-meet-sdk:2.+') { transitive = true }
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

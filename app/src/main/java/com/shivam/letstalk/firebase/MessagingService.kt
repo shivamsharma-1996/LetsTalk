@@ -14,6 +14,7 @@ import com.shivam.letstalk.util.Constants.KEY_LAST_NAME
 import com.shivam.letstalk.util.Constants.REMOTE_MSG_INVITATION
 import com.shivam.letstalk.util.Constants.REMOTE_MSG_INVITATION_RESPONSE
 import com.shivam.letstalk.util.Constants.REMOTE_MSG_INVITOR_TOKEN
+import com.shivam.letstalk.util.Constants.REMOTE_MSG_MEETING_ROOM
 import com.shivam.letstalk.util.Constants.REMOTE_MSG_MEETING_TYPE
 import com.shivam.letstalk.util.Constants.REMOTE_MSG_TYPE
 
@@ -46,6 +47,10 @@ class MessagingService : FirebaseMessagingService() {
                 intent.putExtra(
                     KEY_EMAIL,
                     remoteMessage.data.getValue(KEY_EMAIL)
+                )
+                intent.putExtra(
+                    REMOTE_MSG_MEETING_ROOM,
+                    remoteMessage.data.getValue(REMOTE_MSG_MEETING_ROOM)
                 )
                 intent.putExtra(
                     REMOTE_MSG_INVITOR_TOKEN,
