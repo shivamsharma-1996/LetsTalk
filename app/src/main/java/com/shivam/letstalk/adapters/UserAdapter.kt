@@ -14,7 +14,7 @@ class UserAdapter(private val usersList: ArrayList<User>, val usersListener: Use
 
     inner class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textFirstChar = itemView.findViewById<TextView>(R.id.textFirstChar)
-        private val tvUserName: TextView = itemView.findViewById(R.id.tvUserName)
+        private val tvUserName: TextView = itemView.findViewById(R.id.tvIncomingUserName)
         private val tvEmail: TextView = itemView.findViewById(R.id.tvEmail)
         private val ivAudioMeeting: ImageView = itemView.findViewById(R.id.ivAudioMeeting)
         val ivVideoMeeting: ImageView = itemView.findViewById(R.id.ivVideoMeeting)

@@ -4,22 +4,28 @@ import android.os.Bundle
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.iid.internal.FirebaseInstanceIdInternal
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.shivam.letstalk.R
 import com.shivam.letstalk.adapters.UserAdapter
 import com.shivam.letstalk.custom.launchActivity
+import com.shivam.letstalk.custom.log
 import com.shivam.letstalk.listeners.UsersListener
 import com.shivam.letstalk.models.User
+import com.shivam.letstalk.util.Constants
 import com.shivam.letstalk.util.Constants.KEY_COLLECTION_USERS
 import com.shivam.letstalk.util.Constants.KEY_EMAIL
 import com.shivam.letstalk.util.Constants.KEY_FCM_TOKEN
 import com.shivam.letstalk.util.Constants.KEY_FIRST_NAME
 import com.shivam.letstalk.util.Constants.KEY_LAST_NAME
 import com.shivam.letstalk.util.Constants.KEY_USER_ID
+import com.shivam.letstalk.util.Constants.REMOTE_MSG_INVITOR_TOKEN
 import com.shivam.letstalk.util.clearPreferences
+import com.shivam.letstalk.util.putString
 import com.shivam.letstalk.util.retrieveString
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -45,6 +51,7 @@ class MainActivity : AppCompatActivity(), UsersListener {
                 sendFcmToken(it.result.toString())
             }
         }
+
 
         tvSignOut.setOnClickListener {
             signOut()
@@ -106,6 +113,7 @@ class MainActivity : AppCompatActivity(), UsersListener {
             .addOnSuccessListener {
 //                Toast.makeText(this, "Token updated successfully!", Toast.LENGTH_LONG)
 //                    .show()
+                putString(KEY_FCM_TOKEN, token)
             }
             .addOnFailureListener { e ->
                 Toast.makeText(
@@ -149,6 +157,7 @@ class MainActivity : AppCompatActivity(), UsersListener {
                 launchActivity<OutgoingInvitationActivity> {
                     putExtra("user", user)
                     putExtra("type", "video")
+                    putExtra(REMOTE_MSG_INVITOR_TOKEN, retrieveString(KEY_FCM_TOKEN))
                 }
             }
         }

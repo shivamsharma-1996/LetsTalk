@@ -52,21 +52,23 @@
             android:textSize="@dimen/_30ssp"/>
 
         <TextView
-            android:id="@+id/tvUserName"
+            android:id="@+id/tvIncomingUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="center"
             android:includeFontPadding="false"
             android:fontFamily="@font/ubuntu_bold"
             android:textColor="@color/colorTextIcons"
             android:textSize="@dimen/_18ssp"/>
 
         <TextView
-            android:id="@+id/tvUserEmail"
+            android:id="@+id/tvIncomingUserEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_6sdp"
             android:includeFontPadding="false"
+            android:gravity="center"
             android:fontFamily="@font/ubuntu_regular"
             android:textColor="@color/colorTextIcons"
             android:textSize="@dimen/_11ssp"/>
